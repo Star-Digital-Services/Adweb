@@ -1,0 +1,18 @@
+MONGODB_URI=mongodb://localhost:27017/adweb
+
+# JWT (use a long random string in production)
+JWT_SECRET=your-super-secret-jwt-key-change-in-production
+
+# Razorpay
+RAZORPAY_KEY_ID=rzp_test_xxxxxxxx
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+RAZORPAY_WEBHOOK_SECRET=your_razorpay_webhook_secret
+
+# Content pricing (in paise — 49900 = ₹499)
+CONTENT_PRICE_PAISE=3900
+
+# AWS S3
+AWS_REGION=ap-south-1
+AWS_ACCESS_KEY_ID=your_aws_access_key
+AWS_SECRET_ACCESS_KEY=your_aws_secret_key
+AWS_S3_BUCKET=your-private-bucket-name
