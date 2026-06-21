@@ -17,6 +17,7 @@ import { useRazorpayCheckout } from "@/hooks/useRazorpayCheckout";
 import { AuthModal } from "@/components/AuthModal";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { RazorpayScript } from "@/components/RazorpayScript";
+import { RazorpayTestBanner } from "@/components/RazorpayTestBanner";
 import { devSkipPayment } from "@/lib/dev";
 import { formatSetPrice, getSetById, type PhotoSetConfig } from "@/config/sets";
 import {
@@ -103,6 +104,7 @@ export function SetLanding({ setId }: SetLandingProps) {
     return (
       <div className="animate-fade-in">
         {!devSkipPayment && <RazorpayScript />}
+        {!devSkipPayment && <RazorpayTestBanner />}
         {devSkipPayment && (
           <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
             Dev mode — payment bypassed. Set{" "}
@@ -155,6 +157,7 @@ export function SetLanding({ setId }: SetLandingProps) {
   return (
     <>
       {!devSkipPayment && <RazorpayScript />}
+      {!devSkipPayment && <RazorpayTestBanner />}
       {!devSkipPayment && (
         <AuthModal
           open={authOpen}

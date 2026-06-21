@@ -66,7 +66,26 @@ Set the webhook secret in `RAZORPAY_WEBHOOK_SECRET`.
 
 ### 4b. Razorpay test vs live mode
 
-Use `RAZORPAY_ENV=test` while you are validating the site with Razorpay sandbox credentials. When Razorpay approves the business account, switch to `RAZORPAY_ENV=live` and deploy the live key pair.
+**Before Razorpay approves your website**, keep everything in test mode on both localhost and Render:
+
+```env
+RAZORPAY_ENV=test
+NEXT_PUBLIC_RAZORPAY_ENV=test
+NEXT_PUBLIC_DEV_SKIP_PAYMENT=false
+RAZORPAY_TEST_KEY_ID=rzp_test_...
+RAZORPAY_TEST_KEY_SECRET=...
+```
+
+Use the same test keys in your local `.env` and in the Render dashboard environment variables. The checkout UI shows a test-mode banner and accepts Razorpay sandbox cards (e.g. `4111 1111 1111 1111`).
+
+After approval, switch to live mode:
+
+```env
+RAZORPAY_ENV=live
+NEXT_PUBLIC_RAZORPAY_ENV=live
+RAZORPAY_LIVE_KEY_ID=rzp_live_...
+RAZORPAY_LIVE_KEY_SECRET=...
+```
 
 If you prefer separate variables, the app also supports:
 
@@ -75,6 +94,25 @@ If you prefer separate variables, the app also supports:
 - `RAZORPAY_TEST_WEBHOOK_SECRET` and `RAZORPAY_LIVE_WEBHOOK_SECRET`
 
 If the order API returns an auth error such as invalid token, it usually means the selected key ID and secret do not belong to the same Razorpay environment. Check that the selected `RAZORPAY_ENV` matches the key pair.
+
+### 4c. Render deployment (test mode)
+
+Add these environment variables in Render → your service → **Environment** (mirror your local `.env`):
+
+| Variable | Value |
+|---|---|
+| `MONGODB_URI` | Your MongoDB Atlas connection string |
+| `JWT_SECRET` | Long random string |
+| `RAZORPAY_ENV` | `test` |
+| `NEXT_PUBLIC_RAZORPAY_ENV` | `test` |
+| `NEXT_PUBLIC_DEV_SKIP_PAYMENT` | `false` |
+| `RAZORPAY_TEST_KEY_ID` | `rzp_test_...` from Razorpay dashboard |
+| `RAZORPAY_TEST_KEY_SECRET` | Matching test secret |
+| AWS vars | Same as local |
+
+After deploy, verify: `https://your-app.onrender.com/api/health` should return `"razorpayEnv": "test"` and `"razorpayCredentials": "ok"`.
+
+Optional: in Razorpay Dashboard → Webhooks, add `https://your-app.onrender.com/api/payments/webhook` for `payment.captured`. Client-side verification already grants access if the user completes checkout, so webhooks are a backup.
 
 ### 5. Run locally
 

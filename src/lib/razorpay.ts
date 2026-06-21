@@ -12,14 +12,14 @@ interface RazorpayCredentials {
 
 function getConfiguredEnvironment(): RazorpayEnvironment {
   const configured = (
-    process.env.RAZORPAY_ENV || process.env.NEXT_PUBLIC_RAZORPAY_ENV || "auto"
+    process.env.RAZORPAY_ENV || process.env.NEXT_PUBLIC_RAZORPAY_ENV || "test"
   ).toLowerCase();
 
   if (configured === "test" || configured === "live") {
     return configured;
   }
 
-  return "auto";
+  return "test";
 }
 
 function resolveCredentials(): RazorpayCredentials {
@@ -148,4 +148,24 @@ export function getRazorpayKeyId(): string {
 
 export function getRazorpayEnvironment(): Exclude<RazorpayEnvironment, "auto"> {
   return resolveCredentials().environment;
+}
+
+export function getRazorpayHealthStatus(): {
+  environment: Exclude<RazorpayEnvironment, "auto"> | "unconfigured";
+  credentials: "ok" | "missing";
+  devSkipPayment: boolean;
+} {
+  try {
+    return {
+      environment: resolveCredentials().environment,
+      credentials: "ok",
+      devSkipPayment: process.env.NEXT_PUBLIC_DEV_SKIP_PAYMENT === "true",
+    };
+  } catch {
+    return {
+      environment: "unconfigured",
+      credentials: "missing",
+      devSkipPayment: process.env.NEXT_PUBLIC_DEV_SKIP_PAYMENT === "true",
+    };
+  }
 }
