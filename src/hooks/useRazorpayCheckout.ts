@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { razorpayPublicKeyId } from "@/config/razorpay-public";
 import type { RazorpayOrderResponse } from "@/types";
 import { getSetById } from "@/config/sets";
 
@@ -35,6 +36,16 @@ export function useRazorpayCheckout(setId: string) {
 
       const order: RazorpayOrderResponse = orderData;
 
+      if (
+        razorpayPublicKeyId &&
+        order.keyId &&
+        razorpayPublicKeyId !== order.keyId
+      ) {
+        throw new Error(
+          "Payment configuration mismatch. Update Render env vars so KEY_ID matches on server and client."
+        );
+      }
+
       if (!window.Razorpay) {
         throw new Error("Payment gateway is still loading. Please try again.");
       }
@@ -44,7 +55,7 @@ export function useRazorpayCheckout(setId: string) {
           key: order.keyId,
           amount: order.amount,
           currency: order.currency,
-          name: "AI Content Premium",
+          name: "Spicy Content Premium",
           description: photoSet.name,
           order_id: order.orderId,
           prefill: { email: user.email },
@@ -60,7 +71,9 @@ export function useRazorpayCheckout(setId: string) {
 
               const verifyData = await verifyRes.json();
               if (!verifyRes.ok) {
-                throw new Error(verifyData.error || "Payment verification failed");
+                throw new Error(
+                  verifyData.error || "Payment verification failed"
+                );
               }
 
               await refreshUser();

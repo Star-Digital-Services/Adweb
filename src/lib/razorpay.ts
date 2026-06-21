@@ -1,83 +1,88 @@
 import Razorpay from "razorpay";
 import crypto from "crypto";
 
-type RazorpayEnvironment = "auto" | "test" | "live";
+type RazorpayEnvironment = "test" | "live";
 
 interface RazorpayCredentials {
   keyId: string;
   keySecret: string;
   webhookSecret: string;
-  environment: Exclude<RazorpayEnvironment, "auto">;
+  environment: RazorpayEnvironment;
 }
+
+const MIN_ORDER_AMOUNT_PAISE = 100;
 
 function getConfiguredEnvironment(): RazorpayEnvironment {
   const configured = (
     process.env.RAZORPAY_ENV || process.env.NEXT_PUBLIC_RAZORPAY_ENV || "test"
   ).toLowerCase();
 
-  if (configured === "test" || configured === "live") {
-    return configured;
-  }
-
-  return "test";
+  return configured === "live" ? "live" : "test";
 }
 
-function resolveCredentials(): RazorpayCredentials {
-  const configuredEnvironment = getConfiguredEnvironment();
-
-  const testKeyId = process.env.RAZORPAY_TEST_KEY_ID;
-  const testKeySecret = process.env.RAZORPAY_TEST_KEY_SECRET;
-  const testWebhookSecret = process.env.RAZORPAY_TEST_WEBHOOK_SECRET;
-
-  const liveKeyId = process.env.RAZORPAY_LIVE_KEY_ID;
-  const liveKeySecret = process.env.RAZORPAY_LIVE_KEY_SECRET;
-  const liveWebhookSecret = process.env.RAZORPAY_LIVE_WEBHOOK_SECRET;
-
-  const fallbackKeyId = process.env.RAZORPAY_KEY_ID;
-  const fallbackKeySecret = process.env.RAZORPAY_KEY_SECRET;
-  const fallbackWebhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
-
-  const selectedEnvironment: Exclude<RazorpayEnvironment, "auto"> =
-    configuredEnvironment === "auto"
-      ? testKeyId || testKeySecret || testWebhookSecret
-        ? "test"
-        : "live"
-      : configuredEnvironment;
-
-  if (selectedEnvironment === "test") {
-    const keyId = testKeyId || fallbackKeyId;
-    const keySecret = testKeySecret || fallbackKeySecret;
-    const webhookSecret = testWebhookSecret || fallbackWebhookSecret || "";
-
-    if (!keyId || !keySecret) {
-      throw new Error(
-        "Razorpay test credentials are not configured. Set RAZORPAY_TEST_KEY_ID and RAZORPAY_TEST_KEY_SECRET, or fall back to RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET."
-      );
-    }
-
+function pickCredentialPair(
+  environment: RazorpayEnvironment
+): { keyId?: string; keySecret?: string; webhookSecret?: string } {
+  if (environment === "test") {
     return {
-      keyId,
-      keySecret,
-      webhookSecret,
-      environment: "test",
+      keyId: process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_TEST_KEY_ID,
+      keySecret:
+        process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_TEST_KEY_SECRET,
+      webhookSecret:
+        process.env.RAZORPAY_WEBHOOK_SECRET ||
+        process.env.RAZORPAY_TEST_WEBHOOK_SECRET,
     };
   }
 
-  const keyId = liveKeyId || fallbackKeyId;
-  const keySecret = liveKeySecret || fallbackKeySecret;
-  const webhookSecret = liveWebhookSecret || fallbackWebhookSecret || "";
+  return {
+    keyId: process.env.RAZORPAY_KEY_ID || process.env.RAZORPAY_LIVE_KEY_ID,
+    keySecret:
+      process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_LIVE_KEY_SECRET,
+    webhookSecret:
+      process.env.RAZORPAY_WEBHOOK_SECRET ||
+      process.env.RAZORPAY_LIVE_WEBHOOK_SECRET,
+  };
+}
+
+function assertKeyMatchesEnvironment(
+  keyId: string,
+  environment: RazorpayEnvironment
+): void {
+  const isTestKey = keyId.startsWith("rzp_test_");
+  const isLiveKey = keyId.startsWith("rzp_live_");
+
+  if (environment === "test" && !isTestKey) {
+    throw new Error(
+      "RAZORPAY_ENV is test but KEY_ID is not a test key (must start with rzp_test_)."
+    );
+  }
+
+  if (environment === "live" && !isLiveKey) {
+    throw new Error(
+      "RAZORPAY_ENV is live but KEY_ID is not a live key (must start with rzp_live_)."
+    );
+  }
+}
+
+function resolveCredentials(): RazorpayCredentials {
+  const environment = getConfiguredEnvironment();
+  const { keyId, keySecret, webhookSecret } = pickCredentialPair(environment);
 
   if (!keyId || !keySecret) {
     throw new Error(
-      "Razorpay live credentials are not configured. Set RAZORPAY_LIVE_KEY_ID and RAZORPAY_LIVE_KEY_SECRET, or fall back to RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET."
+      environment === "test"
+        ? "Razorpay test credentials missing. Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET."
+        : "Razorpay live credentials missing. Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET."
     );
   }
+
+  assertKeyMatchesEnvironment(keyId, environment);
 
   return {
     keyId,
     keySecret,
-    webhookSecret,
-    environment: "live",
+    webhookSecret: webhookSecret || "",
+    environment,
   };
 }
 
@@ -90,18 +95,28 @@ function getRazorpayInstance(): Razorpay {
   });
 }
 
+export function validateOrderAmount(amountInPaise: number): void {
+  if (!Number.isInteger(amountInPaise) || amountInPaise < MIN_ORDER_AMOUNT_PAISE) {
+    throw new Error(
+      `Order amount must be at least ${MIN_ORDER_AMOUNT_PAISE} paise.`
+    );
+  }
+}
+
 export async function createRazorpayOrder(
   amountInPaise: number,
   receipt: string,
   setId: string,
   setName: string
 ) {
+  validateOrderAmount(amountInPaise);
+
   const razorpay = getRazorpayInstance();
 
   return razorpay.orders.create({
     amount: amountInPaise,
     currency: "INR",
-    receipt,
+    receipt: receipt.slice(0, 40),
     notes: {
       source: "spicy-content-premium",
       setId,
@@ -146,12 +161,12 @@ export function getRazorpayKeyId(): string {
   return resolveCredentials().keyId;
 }
 
-export function getRazorpayEnvironment(): Exclude<RazorpayEnvironment, "auto"> {
+export function getRazorpayEnvironment(): RazorpayEnvironment {
   return resolveCredentials().environment;
 }
 
 export function getRazorpayHealthStatus(): {
-  environment: Exclude<RazorpayEnvironment, "auto"> | "unconfigured";
+  environment: RazorpayEnvironment | "unconfigured";
   credentials: "ok" | "missing";
   devSkipPayment: boolean;
 } {
