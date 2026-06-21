@@ -2,7 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import connectDB from "@/lib/db";
 import User from "@/models/User";
-import { setAuthCookie, signToken } from "@/lib/auth";
+import {
+  COOKIE_NAME,
+  getAuthCookieOptions,
+  signToken,
+} from "@/lib/auth";
 import { resolvePurchasedSets } from "@/lib/access";
 
 export async function POST(request: NextRequest) {
@@ -44,19 +48,30 @@ export async function POST(request: NextRequest) {
       userId: user._id.toString(),
       email: user.email,
     });
-    await setAuthCookie(token);
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       user: {
         id: user._id.toString(),
         email: user.email,
         purchasedSets: resolvePurchasedSets(user),
       },
     });
+    response.cookies.set(COOKIE_NAME, token, getAuthCookieOptions());
+    return response;
   } catch (error) {
-    console.error("Register error:", error);
+    const message =
+      error instanceof Error ? error.message : "Unknown registration error";
+    console.error("Register error:", message, error);
+
+    if (!process.env.MONGODB_URI) {
+      return NextResponse.json(
+        { error: "Server misconfigured: database connection missing" },
+        { status: 503 }
+      );
+    }
+
     return NextResponse.json(
-      { error: "Registration failed" },
+      { error: "Registration failed. Check server logs for details." },
       { status: 500 }
     );
   }

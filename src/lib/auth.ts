@@ -34,15 +34,19 @@ export async function verifyToken(token: string): Promise<JWTPayload | null> {
   }
 }
 
-export async function setAuthCookie(token: string): Promise<void> {
-  const cookieStore = await cookies();
-  cookieStore.set(COOKIE_NAME, token, {
+export function getAuthCookieOptions() {
+  return {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "lax" as const,
     maxAge: 60 * 60 * 24 * 7,
     path: "/",
-  });
+  };
+}
+
+export async function setAuthCookie(token: string): Promise<void> {
+  const cookieStore = await cookies();
+  cookieStore.set(COOKIE_NAME, token, getAuthCookieOptions());
 }
 
 export async function clearAuthCookie(): Promise<void> {
