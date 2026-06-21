@@ -44,7 +44,7 @@ export function useRazorpayCheckout(setId: string) {
           key: order.keyId,
           amount: order.amount,
           currency: order.currency,
-          name: "Spicy Content Premium",
+          name: "AI Content Premium",
           description: photoSet.name,
           order_id: order.orderId,
           prefill: { email: user.email },

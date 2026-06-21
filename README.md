@@ -1,4 +1,4 @@
-# Spicy Content Premium — Secure Paywalled Content Platform
+# AI Content Premium — Secure Paywalled Content Platform
 
 A production-ready Next.js application that gates sensitive photos behind Razorpay payments and delivers them exclusively via short-lived AWS S3/CloudFront signed URLs.
 

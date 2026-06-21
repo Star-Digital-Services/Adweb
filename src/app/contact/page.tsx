@@ -6,8 +6,8 @@ const { title, lastUpdated, intro, sections } = legalContent.pages.contact;
 const { email, businessName } = legalContent.contact;
 
 export const metadata: Metadata = {
-  title: `${title} — Spicy Content Premium`,
-  description: "Contact Spicy Content Premium for support and billing inquiries.",
+  title: `${title} — AI Content Premium`,
+  description: "Contact AI Content Premium for support and billing inquiries.",
 };
 
 export default function ContactPage() {
