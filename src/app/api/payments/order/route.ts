@@ -6,6 +6,7 @@ import { requireAuth } from "@/lib/middleware-auth";
 import { userOwnsSet } from "@/lib/access";
 import {
   createRazorpayOrder,
+  getRazorpayEnvironment,
   getRazorpayKeyId,
   validateOrderAmount,
 } from "@/lib/razorpay";
@@ -65,6 +66,7 @@ export async function POST(request: NextRequest) {
       amount: razorpayOrder.amount,
       currency: razorpayOrder.currency,
       keyId,
+      environment: getRazorpayEnvironment(),
       setId,
     });
   } catch (error) {

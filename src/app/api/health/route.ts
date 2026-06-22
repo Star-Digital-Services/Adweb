@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import connectDB from "@/lib/db";
-import { getRazorpayHealthStatus } from "@/lib/razorpay";
+import { getRazorpayEnvironment, getRazorpayHealthStatus } from "@/lib/razorpay";
 
 export const dynamic = "force-dynamic";
 
@@ -16,7 +16,6 @@ export async function GET() {
         : "weak-or-missing",
     razorpayEnv: razorpay.environment,
     razorpayCredentials: razorpay.credentials,
-    devSkipPayment: razorpay.devSkipPayment ? "true" : "false",
   };
 
   if (!process.env.MONGODB_URI) {
@@ -30,7 +29,7 @@ export async function GET() {
     );
   }
 
-  if (razorpay.credentials === "missing" && !razorpay.devSkipPayment) {
+  if (razorpay.credentials === "missing") {
     return NextResponse.json(
       {
         ok: false,

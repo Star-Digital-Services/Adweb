@@ -1,3 +1,4 @@
-/** Set NEXT_PUBLIC_DEV_SKIP_PAYMENT=true to bypass Razorpay and view photos locally. */
+/** Local dev only — bypasses Razorpay when NODE_ENV=development. Never enabled in production builds. */
 export const devSkipPayment =
-  process.env.NEXT_PUBLIC_DEV_SKIP_PAYMENT === "true";
+  process.env.NODE_ENV === "development" &&
+  process.env.DEV_SKIP_PAYMENT === "true";

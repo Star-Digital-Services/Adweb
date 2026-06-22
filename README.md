@@ -64,55 +64,40 @@ Subscribe to: `payment.captured`, `payment.failed`
 
 Set the webhook secret in `RAZORPAY_WEBHOOK_SECRET`.
 
-### 4b. Razorpay test vs live mode
+### 4b. Razorpay live mode
 
-**Before Razorpay approves your website**, keep everything in test mode on both localhost and Render:
-
-```env
-RAZORPAY_ENV=test
-NEXT_PUBLIC_RAZORPAY_ENV=test
-NEXT_PUBLIC_DEV_SKIP_PAYMENT=false
-RAZORPAY_TEST_KEY_ID=rzp_test_...
-RAZORPAY_TEST_KEY_SECRET=...
-```
-
-Use the same test keys in your local `.env` and in the Render dashboard environment variables. The checkout UI shows a test-mode banner and accepts Razorpay sandbox cards (e.g. `4111 1111 1111 1111`).
-
-After approval, switch to live mode:
+After Razorpay approves your website, use your **live** API keys from the Razorpay Dashboard (toggle off Test Mode):
 
 ```env
 RAZORPAY_ENV=live
-NEXT_PUBLIC_RAZORPAY_ENV=live
-RAZORPAY_LIVE_KEY_ID=rzp_live_...
-RAZORPAY_LIVE_KEY_SECRET=...
+RAZORPAY_KEY_ID=rzp_live_...
+RAZORPAY_KEY_SECRET=...
+RAZORPAY_WEBHOOK_SECRET=...
 ```
 
-If you prefer separate variables, the app also supports:
+Set the same values on Render. Prices are configured per set in `src/config/sets.ts` (`pricePaise`).
 
-- `RAZORPAY_TEST_KEY_ID` and `RAZORPAY_TEST_KEY_SECRET`
-- `RAZORPAY_LIVE_KEY_ID` and `RAZORPAY_LIVE_KEY_SECRET`
-- `RAZORPAY_TEST_WEBHOOK_SECRET` and `RAZORPAY_LIVE_WEBHOOK_SECRET`
+In Razorpay Dashboard → Webhooks, add:
 
-If the order API returns an auth error such as invalid token, it usually means the selected key ID and secret do not belong to the same Razorpay environment. Check that the selected `RAZORPAY_ENV` matches the key pair.
+```
+https://your-domain.com/api/payments/webhook
+```
 
-### 4c. Render deployment (test mode)
+Subscribe to `payment.captured` and `payment.failed`.
 
-Add these environment variables in Render → your service → **Environment** (mirror your local `.env`):
+### 4c. Render deployment
 
 | Variable | Value |
 |---|---|
-| `MONGODB_URI` | Your MongoDB Atlas connection string |
+| `MONGODB_URI` | MongoDB Atlas connection string |
 | `JWT_SECRET` | Long random string |
-| `RAZORPAY_ENV` | `test` |
-| `NEXT_PUBLIC_RAZORPAY_ENV` | `test` |
-| `NEXT_PUBLIC_DEV_SKIP_PAYMENT` | `false` |
-| `RAZORPAY_TEST_KEY_ID` | `rzp_test_...` from Razorpay dashboard |
-| `RAZORPAY_TEST_KEY_SECRET` | Matching test secret |
+| `RAZORPAY_ENV` | `live` |
+| `RAZORPAY_KEY_ID` | `rzp_live_...` |
+| `RAZORPAY_KEY_SECRET` | Live secret from dashboard |
+| `RAZORPAY_WEBHOOK_SECRET` | Webhook secret from dashboard |
 | AWS vars | Same as local |
 
-After deploy, verify: `https://your-app.onrender.com/api/health` should return `"razorpayEnv": "test"` and `"razorpayCredentials": "ok"`.
-
-Optional: in Razorpay Dashboard → Webhooks, add `https://your-app.onrender.com/api/payments/webhook` for `payment.captured`. Client-side verification already grants access if the user completes checkout, so webhooks are a backup.
+Verify after deploy: `https://your-app.onrender.com/api/health` should show `"razorpayEnv": "live"`.
 
 ### 5. Run locally
 
@@ -146,9 +131,9 @@ For webhook testing locally, use [ngrok](https://ngrok.com/) to expose your dev 
 ## Production Checklist
 
 - [ ] Set strong `JWT_SECRET`
-- [ ] Use Razorpay live keys
+- [ ] Use Razorpay **live** keys (`RAZORPAY_ENV=live`)
 - [ ] Configure HTTPS (required for secure cookies)
 - [ ] Set S3 bucket policy to deny public access
 - [ ] Enable CloudFront signed URLs with key rotation
 - [ ] Register webhook URL in Razorpay dashboard
-- [ ] Set `CONTENT_PRICE_PAISE` to your desired price
+- [ ] Set prices in `src/config/sets.ts`

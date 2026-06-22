@@ -5,9 +5,8 @@ import type { CSSProperties } from "react";
 export const PREVIEW_IMAGE = "/preview/cover.jpg";
 export const PREVIEW_IMAGE_FALLBACK = "/preview/cover.svg";
 
-// Bump this number whenever you change cover.jpg (e.g. 1 → 2 → 3)
-export const PREVIEW_VERSION =
-  process.env.NEXT_PUBLIC_PREVIEW_VERSION || "1";
+// Bump this number in code when you replace public/preview/cover.jpg (cache bust).
+export const PREVIEW_VERSION = "1";
 
 /**
  * Blur strength 0–100.

@@ -2,7 +2,6 @@
 
 import { useCallback, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { razorpayPublicKeyId } from "@/config/razorpay-public";
 import type { RazorpayOrderResponse } from "@/types";
 import { getSetById } from "@/config/sets";
 
@@ -35,16 +34,6 @@ export function useRazorpayCheckout(setId: string) {
       }
 
       const order: RazorpayOrderResponse = orderData;
-
-      if (
-        razorpayPublicKeyId &&
-        order.keyId &&
-        razorpayPublicKeyId !== order.keyId
-      ) {
-        throw new Error(
-          "Payment configuration mismatch. Update Render env vars so KEY_ID matches on server and client."
-        );
-      }
 
       if (!window.Razorpay) {
         throw new Error("Payment gateway is still loading. Please try again.");

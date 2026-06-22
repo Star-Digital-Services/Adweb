@@ -2,8 +2,8 @@ Place your preview image here as cover.jpg
 
 When you swap to a different cover:
 1. Replace public/preview/cover.jpg with your new image
-2. Bump NEXT_PUBLIC_PREVIEW_VERSION in .env (1 → 2 → 3 …)
-3. Restart npm run dev (or save .env and hard-refresh)
+2. Bump PREVIEW_VERSION in src/config/preview.ts (1 → 2 → 3 …)
+3. Hard-refresh the browser (Ctrl+Shift+R)
 
 If Edge still shows the old image:
 - Press Ctrl+Shift+R (hard refresh)

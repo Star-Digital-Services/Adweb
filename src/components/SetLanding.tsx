@@ -17,7 +17,6 @@ import { useRazorpayCheckout } from "@/hooks/useRazorpayCheckout";
 import { AuthModal } from "@/components/AuthModal";
 import { PhotoGallery } from "@/components/PhotoGallery";
 import { RazorpayScript } from "@/components/RazorpayScript";
-import { RazorpayTestBanner } from "@/components/RazorpayTestBanner";
 import { devSkipPayment } from "@/lib/dev";
 import { formatSetPrice, getSetById, type PhotoSetConfig } from "@/config/sets";
 import {
@@ -104,12 +103,11 @@ export function SetLanding({ setId }: SetLandingProps) {
     return (
       <div className="animate-fade-in">
         {!devSkipPayment && <RazorpayScript />}
-        {!devSkipPayment && <RazorpayTestBanner />}
         {devSkipPayment && (
           <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
-            Dev mode — payment bypassed. Set{" "}
-            <code className="text-amber-100">NEXT_PUBLIC_DEV_SKIP_PAYMENT=false</code>{" "}
-            in <code className="text-amber-100">.env</code> to re-enable Razorpay.
+            Dev mode — payment bypassed. Remove{" "}
+            <code className="text-amber-100">DEV_SKIP_PAYMENT=true</code> from{" "}
+            <code className="text-amber-100">.env</code> to use live Razorpay.
           </div>
         )}
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
@@ -157,7 +155,6 @@ export function SetLanding({ setId }: SetLandingProps) {
   return (
     <>
       {!devSkipPayment && <RazorpayScript />}
-      {!devSkipPayment && <RazorpayTestBanner />}
       {!devSkipPayment && (
         <AuthModal
           open={authOpen}
