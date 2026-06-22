@@ -6,7 +6,7 @@ export const legalContent = {
   contact: {
     email: "tsingh.bsb@gmail.com",
     responseTime: "We aim to respond within 2 business days.",
-    businessName: "AI Content Premium",
+    businessName: "Spicy Content Premium",
   },
 
   pages: {
@@ -17,7 +17,7 @@ export const legalContent = {
         {
           title: "1. Acceptance of Terms",
           paragraphs: [
-            "By accessing or using AI Content Premium (\"the Service\"), you agree to be bound by these Terms & Conditions. If you do not agree, do not use the Service.",
+            "By accessing or using Spicy Content Premium (\"the Service\"), you agree to be bound by these Terms & Conditions. If you do not agree, do not use the Service.",
           ],
         },
         {
@@ -59,7 +59,7 @@ export const legalContent = {
         {
           title: "8. Intellectual Property",
           paragraphs: [
-            "All content, branding, and software associated with the Service remain the property of AI Content Premium or its licensors. No ownership rights are transferred to you through purchase or access.",
+            "All content, branding, and software associated with the Service remain the property of Spicy Content Premium or its licensors. No ownership rights are transferred to you through purchase or access.",
           ],
         },
         {
@@ -90,7 +90,7 @@ export const legalContent = {
         {
           title: "1. Introduction",
           paragraphs: [
-            "AI Content Premium (\"we,\" \"us,\" or \"our\") respects your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services.",
+            "Spicy Content Premium (\"we,\" \"us,\" or \"our\") respects your privacy. This Privacy Policy explains how we collect, use, and protect your information when you use our website and services.",
           ],
         },
         {
@@ -153,7 +153,7 @@ export const legalContent = {
         {
           title: "1. Digital Goods — No Refunds",
           paragraphs: [
-            "AI Content Premium sells digital content delivered instantly upon successful payment. Because access is granted immediately and the product cannot be returned, all sales are final and non-refundable once payment is verified and access is provided.",
+            "Spicy Content Premium sells digital content delivered instantly upon successful payment. Because access is granted immediately and the product cannot be returned, all sales are final and non-refundable once payment is verified and access is provided.",
           ],
         },
         {

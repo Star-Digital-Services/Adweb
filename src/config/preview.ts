@@ -10,9 +10,9 @@ export const PREVIEW_VERSION = "1";
 
 /**
  * Blur strength 0–100.
- * 40 = noticeably soft. 70+ = hard to make out details. 100 = heavily obscured.
+ * Set to 0 to show the cover image clearly.
  */
-export const PREVIEW_BLUR_PERCENT = 15;
+export const PREVIEW_BLUR_PERCENT = 0;
 
 /** Converts blur % into real CSS values (blur + zoom + dark overlay). */
 export function getPreviewBlurStyles(percent = PREVIEW_BLUR_PERCENT) {

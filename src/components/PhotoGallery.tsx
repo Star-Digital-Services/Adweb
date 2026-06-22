@@ -103,7 +103,7 @@ export function PhotoGallery({ setId }: PhotoGalleryProps) {
         <div>
           <h2 className="text-2xl font-semibold text-white">{galleryTitle}</h2>
           <p className="text-sm text-zinc-400 mt-1">{gallerySubtitle}</p>
-          <p className="text-xs text-zinc-500 mt-1">{photos.length} photos</p>
+          <p className="text-xs text-zinc-500 mt-1">photos</p>
         </div>
         <button
           onClick={loadPhotos}

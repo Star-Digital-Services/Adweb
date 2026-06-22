@@ -6,7 +6,7 @@
 export const siteContent = {
   // ── Header (top bar) ──────────────────────────────────────
   brand: {
-    name: "AI Content Premium",
+    name: "Spicy Content Premium",
     logoLetter: "S",
     tagline: "Secured by Razorpay & AWS",
   },

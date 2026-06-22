@@ -5,8 +5,8 @@ import { legalContent } from "@/config/legal-content";
 const { title, lastUpdated, sections } = legalContent.pages.terms;
 
 export const metadata: Metadata = {
-  title: `${title} — AI Content Premium`,
-  description: "Terms and conditions for using AI Content Premium.",
+  title: `${title} — Spicy Content Premium`,
+  description: "Terms and conditions for using Spicy Content Premium.",
 };
 
 export default function TermsPage() {

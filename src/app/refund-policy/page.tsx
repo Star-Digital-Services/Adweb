@@ -5,8 +5,8 @@ import { legalContent } from "@/config/legal-content";
 const { title, lastUpdated, sections } = legalContent.pages.refund;
 
 export const metadata: Metadata = {
-  title: `${title} — AI Content Premium`,
-  description: "Refund and cancellation policy for AI Content Premium digital purchases.",
+  title: `${title} — Spicy Content Premium`,
+  description: "Refund and cancellation policy for Spicy Content Premium digital purchases.",
 };
 
 export default function RefundPolicyPage() {

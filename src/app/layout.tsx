@@ -6,7 +6,7 @@ import { siteContent } from "@/config/site-content";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "AI Content Premium — Secure Content Access",
+  title: "Spicy Content Premium — Secure Content Access",
   description: siteContent.brand.name + " — exclusive content gated behind secure payments.",
 };
 

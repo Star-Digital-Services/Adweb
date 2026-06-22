@@ -23,6 +23,7 @@ export interface PhotoSetConfig {
   processingButton: string;
   devViewButton: string;
   previewCaption: string;
+  photoCountLabel?: string;
   galleryTitle: string;
   gallerySubtitle: string;
 }
@@ -51,6 +52,7 @@ export const photoSets: PhotoSetConfig[] = [
     processingButton: "Processing…",
     devViewButton: "View Photos (test mode)",
     previewCaption: "Preview — unlock for full access",
+    photoCountLabel: "50+ photos",
     galleryTitle: "Set 1 — Your Collection",
     gallerySubtitle: "Secure, time-limited access — links expire automatically",
   },

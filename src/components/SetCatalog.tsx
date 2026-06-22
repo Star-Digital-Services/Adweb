@@ -46,6 +46,27 @@ export function SetCatalog() {
                   onContextMenu={(e) => e.preventDefault()}
                   draggable={false}
                 />
+                {set.photoCountLabel && (
+                  <svg
+                    viewBox="0 0 100 100"
+                    aria-hidden="true"
+                    className="absolute left-0 top-0 h-24 w-24 drop-shadow-lg pointer-events-none"
+                  >
+                    <polygon points="0,0 0,100 100,0" fill="url(#set-card-badge-gradient)" />
+                    <defs>
+                      <linearGradient id="set-card-badge-gradient" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stopColor="#22c55e" />
+                        <stop offset="100%" stopColor="#0f766e" />
+                      </linearGradient>
+                    </defs>
+                    <text x="14" y="24" fill="white" fontSize="16" fontWeight="700" letterSpacing="1.5">
+                      50+
+                    </text>
+                    <text x="10" y="40" fill="white" fontSize="11" fontWeight="700" letterSpacing="1.2">
+                      photos
+                    </text>
+                  </svg>
+                )}
                 <div
                   className="absolute inset-0 bg-black pointer-events-none"
                   style={{ opacity: previewBlur.overlayOpacity }}

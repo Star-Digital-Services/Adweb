@@ -60,9 +60,7 @@ export function useRazorpayCheckout(setId: string) {
 
               const verifyData = await verifyRes.json();
               if (!verifyRes.ok) {
-                throw new Error(
-                  verifyData.error || "Payment verification failed"
-                );
+                throw new Error(verifyData.error || "Payment verification failed");
               }
 
               await refreshUser();
