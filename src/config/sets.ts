@@ -47,7 +47,7 @@ export const photoSets: PhotoSetConfig[] = [
       "Future additions included at no extra cost",
     ],
     currency: "₹",
-    priceLabel: "one-time access",
+    priceLabel: "Lifetime access after payment",
     unlockButton: "Unlock Set 1",
     processingButton: "Processing…",
     devViewButton: "View Photos (test mode)",
