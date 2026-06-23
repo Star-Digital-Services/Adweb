@@ -24,10 +24,13 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
       },
       animation: {
         "fade-in": "fadeIn 0.5s ease-out",
         "slide-up": "slideUp 0.5s ease-out",
+        "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "glow-slow": "glowSlow 6s ease-in-out infinite alternate",
       },
       keyframes: {
         fadeIn: {
@@ -37,6 +40,11 @@ const config: Config = {
         slideUp: {
           "0%": { opacity: "0", transform: "translateY(16px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        glowSlow: {
+          "0%": { opacity: "0.3", transform: "scale(0.95) translate(0px, 0px)" },
+          "50%": { opacity: "0.6", transform: "scale(1.05) translate(10px, -10px)" },
+          "100%": { opacity: "0.3", transform: "scale(0.95) translate(0px, 0px)" },
         },
       },
     },

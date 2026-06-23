@@ -9,6 +9,7 @@ import {
   Shield,
   Sparkles,
   Unlock,
+  Lock,
   Images,
   ArrowLeft,
 } from "lucide-react";
@@ -165,13 +166,13 @@ export function SetLanding({ setId }: SetLandingProps) {
 
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-zinc-400 hover:text-white transition mb-6"
+        className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-zinc-500 hover:text-rose-400 transition mb-8 group"
       >
-        <ArrowLeft className="h-4 w-4" />
-        All sets
+        <ArrowLeft className="h-4 w-4 transition-transform duration-200 group-hover:-translate-x-1" />
+        All Collections
       </Link>
 
-      <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 xl:gap-16 items-center animate-fade-in">
+      <div className="grid lg:grid-cols-2 gap-10 lg:gap-14 xl:gap-20 items-center animate-fade-in max-w-6xl mx-auto">
         <SetPreview
           previewSrc={previewSrc}
           previewBlur={previewBlur}
@@ -210,48 +211,52 @@ function SetPreview({
 }) {
   return (
     <div className="relative w-full mx-auto lg:mx-0">
-      <div className="absolute -inset-4 bg-brand-600/10 blur-3xl rounded-3xl pointer-events-none" />
-      <div className="relative aspect-[3/4] sm:aspect-[4/5] w-full max-w-xl mx-auto lg:max-w-none rounded-2xl overflow-hidden border border-zinc-700/80 shadow-2xl shadow-black/50 ring-1 ring-white/5">
+      {/* Luxurious ambient crimson glow halo behind preview */}
+      <div className="absolute -inset-6 halo-velvet rounded-[2.5rem] opacity-75 blur-3xl pointer-events-none animate-pulse-slow" />
+      
+      <div className="relative aspect-[3/4] sm:aspect-[4/5] w-full max-w-xl mx-auto lg:max-w-none rounded-3xl overflow-hidden border border-white/5 shadow-2xl shadow-black/85 ring-1 ring-white/10 group">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={previewSrc}
           alt={`${photoSet.name} preview`}
-          className="absolute inset-0 h-full w-full object-cover select-none"
+          className="absolute inset-0 h-full w-full object-cover select-none transition-transform duration-700 ease-out group-hover:scale-[1.03]"
           style={previewBlur.imageStyle}
           onContextMenu={(e) => e.preventDefault()}
           onError={onPreviewError}
           draggable={false}
         />
+        
         {photoSet.photoCountLabel && (
           <svg
             viewBox="0 0 100 100"
             aria-hidden="true"
-            className="absolute left-0 top-0 h-28 w-28 sm:h-32 sm:w-32 drop-shadow-lg pointer-events-none"
+            className="absolute left-0 top-0 h-28 w-28 sm:h-32 sm:w-32 drop-shadow-md pointer-events-none z-10"
           >
             <polygon points="0,0 0,100 100,0" fill="url(#set-preview-badge-gradient)" />
             <defs>
               <linearGradient id="set-preview-badge-gradient" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stopColor="#22c55e" />
-                <stop offset="100%" stopColor="#0f766e" />
+                <stop offset="0%" stopColor="#fcd34d" />
+                <stop offset="100%" stopColor="#b45309" />
               </linearGradient>
             </defs>
-            <text x="14" y="24" fill="white" fontSize="16" fontWeight="700" letterSpacing="1.5">
+            <text x="14" y="24" fill="white" fontSize="16" fontWeight="700" letterSpacing="1">
               50+
             </text>
-            <text x="10" y="40" fill="white" fontSize="11" fontWeight="700" letterSpacing="1.2">
-              photos
+            <text x="12" y="38" fill="rgba(255,255,255,0.85)" fontSize="9" fontWeight="700" letterSpacing="1">
+              PHOTOS
             </text>
           </svg>
         )}
+        
         <div
-          className="absolute inset-0 bg-black pointer-events-none"
-          style={{ opacity: previewBlur.overlayOpacity }}
+          className="absolute inset-0 bg-[#050506] pointer-events-none transition-opacity duration-500 group-hover:opacity-40"
+          style={{ opacity: previewBlur.overlayOpacity + 0.1 }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        <div className="absolute inset-x-0 bottom-0 p-5 sm:p-6">
-          <div className="flex items-center gap-2 text-white/90">
-            <Shield className="h-4 w-4 text-brand-400 shrink-0" />
-            <p className="text-sm font-medium">{photoSet.previewCaption}</p>
+        <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-950/70 border border-white/5 backdrop-blur-md">
+            <Lock className="h-3 w-3 text-rose-400 shrink-0" />
+            <p className="text-[11px] font-semibold text-rose-200 tracking-wider uppercase font-sans">{photoSet.previewCaption}</p>
           </div>
         </div>
       </div>
@@ -277,49 +282,54 @@ function SetPurchaseCard({
   onDevView: () => void;
 }) {
   return (
-    <div className="w-full max-w-xl mx-auto lg:max-w-none">
-      <div className="rounded-2xl border border-zinc-800/80 bg-zinc-900/40 backdrop-blur-sm p-6 sm:p-8 lg:p-10 space-y-6 sm:space-y-7">
-        <div className="inline-flex items-center gap-2 rounded-full border border-brand-500/30 bg-brand-500/10 px-3.5 py-1.5 text-xs font-semibold text-brand-300 uppercase tracking-wide">
-          <Sparkles className="h-3.5 w-3.5" />
+    <div className="w-full max-w-xl mx-auto lg:max-w-none relative">
+      {/* Ambient background glow */}
+      <div className="absolute -inset-4 halo-gold rounded-full opacity-40 blur-2xl pointer-events-none" />
+
+      <div className="relative rounded-3xl border border-white/5 bg-zinc-950/20 backdrop-blur-md p-8 sm:p-10 lg:p-12 space-y-8 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+        <div className="inline-flex items-center gap-2 rounded-full border border-rose-500/20 bg-rose-500/5 px-4 py-1.5 text-[11px] font-bold text-rose-300 uppercase tracking-widest shadow-sm">
+          <Sparkles className="h-3.5 w-3.5 text-rose-400 animate-pulse" />
           {photoSet.badge}
         </div>
 
         <div className="space-y-4">
-          <h1 className="text-3xl sm:text-4xl xl:text-[2.75rem] font-bold text-white leading-[1.15] tracking-tight">
+          <h1 className="text-4xl sm:text-5xl lg:text-[2.75rem] font-serif font-medium text-white leading-[1.12] tracking-tight">
             {photoSet.headline}
-            <span className="block mt-1 text-transparent bg-clip-text bg-gradient-to-r from-brand-300 to-brand-500">
+            <span className="block mt-1.5 text-transparent bg-clip-text bg-gradient-to-r from-rose-200 via-rose-300 to-amber-200 italic font-serif">
               {photoSet.headlineAccent}
             </span>
           </h1>
-          <p className="text-base sm:text-lg text-zinc-400 leading-relaxed">
+          <p className="text-sm sm:text-base text-zinc-400 leading-relaxed font-sans">
             {photoSet.description}
           </p>
         </div>
 
         {!devSkipPayment && (
           <>
-            <ul className="space-y-3.5 pt-1">
+            <ul className="space-y-3.5 pt-2 border-t border-white/5">
               {photoSet.features.map((feature) => (
                 <li
                   key={feature}
-                  className="flex items-start gap-3 text-sm sm:text-[0.95rem] text-zinc-300"
+                  className="flex items-start gap-3.5 text-sm text-zinc-300 font-sans"
                 >
-                  <CheckCircle2 className="h-4 w-4 text-brand-400 mt-0.5 shrink-0" />
-                  {feature}
+                  <CheckCircle2 className="h-4.5 w-4.5 text-rose-400 mt-0.5 shrink-0" />
+                  <span>{feature}</span>
                 </li>
               ))}
             </ul>
 
-            <div className="flex items-end gap-3 pt-2 pb-1">
-              <span className="text-4xl sm:text-5xl font-bold text-white tracking-tight">
-                {photoSet.currency}
-                {formatSetPrice(photoSet)}
+            <div className="flex items-baseline gap-3 pt-3">
+              <span className="text-5xl sm:text-6xl font-serif font-black text-white tracking-tight">
+                <span className="text-2xl sm:text-3xl text-zinc-100 font-sans align-top mr-1 font-bold">{photoSet.currency}</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-200 to-zinc-300 font-extrabold">{formatSetPrice(photoSet)}</span>
               </span>
-              <span className="text-sm text-zinc-500 pb-1.5">{photoSet.priceLabel}</span>
+              <span className="text-xs uppercase tracking-[0.3em] font-semibold font-sans text-white bg-white/10 border border-white/15 rounded-full px-3 py-1 shadow-sm shadow-black/20">
+                {photoSet.priceLabel}
+              </span>
             </div>
 
             {error && (
-              <p className="text-sm text-red-400 bg-red-400/10 border border-red-400/20 rounded-xl px-4 py-3">
+              <p className="text-sm text-rose-300 bg-rose-950/20 border border-rose-500/30 rounded-xl px-4 py-3 font-sans">
                 {error}
               </p>
             )}
@@ -327,19 +337,37 @@ function SetPurchaseCard({
             <button
               onClick={onUnlock}
               disabled={processing}
-              className="w-full inline-flex items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 px-8 py-4 text-base font-semibold text-white hover:from-brand-500 hover:to-brand-400 disabled:opacity-60 transition shadow-xl shadow-brand-600/25"
+              className="w-full inline-flex items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-rose-600 via-rose-500 to-amber-500 px-8 py-4.5 text-base font-bold text-white hover:from-rose-500 hover:to-amber-400 active:scale-[0.98] transition-all duration-300 shadow-xl shadow-rose-950/20 btn-glow-rose disabled:opacity-60"
             >
               {processing ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
+                <Loader2 className="h-5 w-5 animate-spin text-amber-200" />
               ) : (
                 <Unlock className="h-5 w-5" />
               )}
-              {processing ? photoSet.processingButton : photoSet.unlockButton}
+              <span>{processing ? photoSet.processingButton : photoSet.unlockButton}</span>
             </button>
 
+            {/* Premium Trust Panel */}
+            <div className="pt-6 border-t border-white/5 grid grid-cols-3 gap-3 text-center">
+              <div className="space-y-1">
+                <Shield className="h-4.5 w-4.5 text-amber-500 mx-auto" />
+                <span className="block text-[9px] text-zinc-500 font-bold uppercase tracking-widest font-sans">SSL Encrypted</span>
+              </div>
+              <div className="space-y-1">
+                <Lock className="h-4.5 w-4.5 text-rose-400 mx-auto" />
+                <span className="block text-[9px] text-zinc-500 font-bold uppercase tracking-widest font-sans">Instant Access</span>
+              </div>
+              <div className="space-y-1">
+                <svg className="h-4.5 w-4.5 text-emerald-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                <span className="block text-[9px] text-zinc-500 font-bold uppercase tracking-widest font-sans">100% Secure</span>
+              </div>
+            </div>
+
             {user && (
-              <p className="text-sm text-zinc-500 text-center sm:text-left">
-                Signed in as <span className="text-zinc-300">{user.email}</span>
+              <p className="text-xs text-zinc-500 text-center font-sans">
+                Logged in as <span className="text-zinc-300 font-semibold">{user.email}</span>
               </p>
             )}
           </>
@@ -348,10 +376,10 @@ function SetPurchaseCard({
         {devSkipPayment && (
           <button
             onClick={onDevView}
-            className="w-full inline-flex items-center justify-center gap-2.5 rounded-xl bg-emerald-600 px-8 py-4 text-base font-semibold text-white hover:bg-emerald-500 transition shadow-xl shadow-emerald-600/25"
+            className="w-full inline-flex items-center justify-center gap-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 px-8 py-4.5 text-base font-bold text-white hover:from-emerald-500 hover:to-teal-400 active:scale-[0.98] transition-all duration-300 shadow-xl shadow-emerald-950/20 btn-glow-gold"
           >
             <Images className="h-5 w-5" />
-            {photoSet.devViewButton}
+            <span>{photoSet.devViewButton}</span>
           </button>
         )}
       </div>

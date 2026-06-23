@@ -15,8 +15,12 @@ export default function Home() {
 
         <aside
           aria-label="Platform disclaimer"
-          className="mt-10 sm:mt-12 rounded-xl border border-zinc-800/80 bg-zinc-900/30 px-4 sm:px-6 py-4 text-center text-xs sm:text-sm text-zinc-500 leading-relaxed"
+          className="mt-14 sm:mt-18 rounded-2xl border border-white/5 bg-zinc-950/20 backdrop-blur-sm px-6 sm:px-8 py-5 text-center text-[11px] sm:text-xs text-zinc-500 leading-relaxed max-w-4xl mx-auto shadow-xl ring-1 ring-white/5"
         >
+          <div className="flex items-center justify-center gap-1.5 mb-2 text-amber-500/80 uppercase tracking-widest text-[9px] font-bold">
+            <span className="h-1 w-1 rounded-full bg-amber-500 animate-pulse" />
+            Compliance & Authenticity Notice
+          </div>
           {disclaimer}
         </aside>
       </div>
