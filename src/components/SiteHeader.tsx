@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { Shield } from "lucide-react";
+import { Shield, Instagram } from "lucide-react";
 import { siteContent } from "@/config/site-content";
 
 export function SiteHeader() {
-  const { brand } = siteContent;
+  const { brand, instagramUrl } = siteContent;
 
   return (
     <header className="border-b border-white/5 backdrop-blur-md sticky top-0 z-40 bg-zinc-950/70">
@@ -21,10 +21,22 @@ export function SiteHeader() {
             </span>
           </div>
         </Link>
-        
-        <div className="hidden sm:flex items-center gap-2 rounded-full border border-amber-500/10 bg-amber-500/5 px-3 py-1 text-[11px] font-medium text-amber-300/90 shadow-sm shadow-amber-950/20">
-          <Shield className="h-3 w-3 text-amber-400" />
-          <span>{brand.tagline}</span>
+
+        <div className="hidden sm:flex items-center gap-3">
+          <div className="flex items-center gap-2 rounded-full border border-amber-500/10 bg-amber-500/5 px-3 py-1 text-[11px] font-medium text-amber-300/90 shadow-sm shadow-amber-950/20">
+            <Shield className="h-3 w-3 text-amber-400" />
+            <span>{brand.tagline}</span>
+          </div>
+
+          <a
+            href={instagramUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-pink-500/20 bg-pink-500/10 px-3 py-1 text-[11px] font-semibold text-pink-100 transition hover:bg-pink-500/20 hover:text-white"
+          >
+            <Instagram className="h-3.5 w-3.5" />
+            Instagram
+          </a>
         </div>
       </div>
     </header>

@@ -11,6 +11,8 @@ export const siteContent = {
     tagline: "Secured by Razorpay & AWS",
   },
 
+  instagramUrl: "https://www.instagram.com/sexy.nancy.angel",
+
   // ── Catalog (homepage) ──────────────────────────────────────
   catalog: {
     badge: "Premium Collections",
